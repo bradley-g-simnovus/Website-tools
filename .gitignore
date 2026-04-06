@@ -47,6 +47,6 @@ coverage/
 /public/build/
 
 # Ignore package lock files (optional, uncomment if you want)
-# package-lock.json
+package-lock.json
 # yarn.lock
 # pnpm-lock.yaml

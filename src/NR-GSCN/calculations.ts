@@ -13,6 +13,8 @@ interface BandInfo {
     high_arfcn: number;
     low_freq: number;
     high_freq: number;
+    low_uplink_freq: number;
+    high_uplink_freq: number;
     min_gscn: number;
     max_gscn: number;
     step_size: number;

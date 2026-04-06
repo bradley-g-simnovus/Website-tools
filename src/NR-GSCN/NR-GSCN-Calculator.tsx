@@ -49,6 +49,11 @@ interface ParametersTableProps {
     title?: string;
 }
 
+interface BandInfoTableProps {
+    bands: BandInfo[];
+    title?: string;
+}
+
 const btnInlineStyles = {
     base: {
         padding: '10px 16px',
@@ -106,6 +111,39 @@ function ParametersTable({ parameters, title = 'Parameters' }: ParametersTablePr
                         <span className="text-sm font-bold text-gray-900 text-right">{param.value}</span>
                     </div>
                 ))}
+            </div>
+        </div>
+    );
+}
+
+function BandInfoTable({ bands, title = 'Band Information' }: BandInfoTableProps) {
+    return (
+        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-50 flex items-center justify-between">
+                <span className="text-sm font-bold text-gray-700 uppercase tracking-wider">{title}</span>
+            </div>
+
+            <div className="overflow-x-auto">
+                <table className="w-full">
+                    <thead className="bg-gray-50 border-b border-gray-100">
+                        <tr>
+                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Band</th>
+                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">DL Frequency Range</th>
+                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">UL Frequency Range</th>
+                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Mode</th>
+                        </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-50">
+                        {bands.map((band) => (
+                            <tr key={band.band} className="hover:bg-gray-50 transition-colors">
+                                <td className="px-6 py-4 text-sm font-bold text-gray-900">{band.band}</td>
+                                <td className="px-6 py-4 text-sm text-gray-700">{band.low_freq}-{band.high_freq} MHz</td>
+                                <td className="px-6 py-4 text-sm text-gray-700">{band.low_uplink_freq}-{band.high_uplink_freq} MHz</td>
+                                <td className="px-6 py-4 text-sm font-semibold text-gray-900">{band.mode}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );
@@ -217,17 +255,7 @@ export function NRGSCNCalculator() {
             { label: 'SSB Frequency', value: `${result.ssbFreq?.toFixed(2)} MHz` },
         ];
 
-        const bandParams: ParameterRow[] = result.bands && result.bands.length > 0 ? [
-            { label: 'Matching Bands', value: result.bands.map((b) => b.band).join(', ') },
-            ...result.bands.map((band, idx) => ({
-                label: `Band ${band.band} DL Frequency Range`,
-                value: `${band.low_freq}-${band.high_freq} MHz`,
-            })),
-            ...result.bands.map((band, idx) => ({
-                label: `Band ${band.band} Mode`,
-                value: `${band.mode}`,
-            })),
-        ] : [
+        const bandParams: ParameterRow[] = result.bands && result.bands.length > 0 ? [] : [
             { label: 'Band', value: 'Not found' },
         ];
 
@@ -266,7 +294,11 @@ export function NRGSCNCalculator() {
                 </div>
 
                 <ParametersTable parameters={conversionParams} title="Conversion Results" />
-                <ParametersTable parameters={bandParams} title="Band Information" />
+                {result.bands && result.bands.length > 0 ? (
+                    <BandInfoTable bands={result.bands} title="Band Information" />
+                ) : (
+                    <ParametersTable parameters={bandParams} title="Band Information" />
+                )}
             </div>
         );
     };
@@ -278,7 +310,7 @@ export function NRGSCNCalculator() {
                     {/* Header */}
                     <div className="flex flex-col items-center gap-4">
                         <img src={logoDark} alt="Simnovus" className="h-10 w-auto object-contain" />
-                        <h1 className="text-xl font-bold text-gray-900 tracking-tight">NR Calculator</h1>
+                        <h1 className="text-xl font-bold text-gray-900 tracking-tight">SSB Calculator</h1>
                     </div>
 
                     {/* Input Section */}
