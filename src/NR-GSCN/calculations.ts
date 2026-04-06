@@ -1,4 +1,4 @@
-import bandDataSimplified from './3GPP-NR-FR1-simplified.json';
+import bandDataSimplified from './NR-info.json';
 
 interface Result {
     inputValue: number;

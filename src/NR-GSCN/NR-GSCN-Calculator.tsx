@@ -431,6 +431,15 @@ export function NRGSCNCalculator() {
                                 </div>
                             )}
                         </div>
+                        <div className="space-y-1.5">
+                        <a
+                            href="/band-info"
+                            style={{ ...btnInlineStyles.base, ...btnInlineStyles.secondary }}
+                            className="text-center"
+                        >
+                            Band Information
+                        </a>
+                    </div>
                     </div>
                 </div>
 
