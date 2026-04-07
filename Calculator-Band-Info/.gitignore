@@ -1,0 +1,52 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Dependency directories
+jspm_packages/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE/editor folders
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# Environment variables and secrets
+.env
+.env.*
+
+# Misc
+*.local
+*.log
+*.tgz
+
+# Docker
+*.tar
+docker-builds/
+
+# Optional: ignore coverage and test output
+coverage/
+
+# Optional: ignore compiled TypeScript
+*.tsbuildinfo
+
+# Ignore public build artifacts
+/public/build/
+
+# Ignore package lock files (optional, uncomment if you want)
+package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
