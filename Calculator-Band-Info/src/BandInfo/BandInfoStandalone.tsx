@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { Search, X } from 'lucide-react';
+import { Search, X, ArrowRight, ChevronDown } from 'lucide-react';
 import nrBands from './NR.json';
 import lteBands from './LTE.json';
 import logoDark from '../../logo_dark.svg';
@@ -193,6 +193,7 @@ export function BandInfoStandalone() {
   const [filters, setFilters] = useState<Filters>(INITIAL_FILTERS);
   const [sortConfig, setSortConfig] = useState<SortConfig>(INITIAL_SORT);
   const [selectedBand, setSelectedBand] = useState<NormalizedBand | null>(null);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   const rawData = useMemo(
     () => transformData((currentRat === 'NR' ? nrBands : lteBands) as RawBandSource[], currentRat),
@@ -226,11 +227,7 @@ export function BandInfoStandalone() {
     const search = filters.search.trim().toLowerCase();
 
     const filtered = rawData.filter((item) => {
-      if (
-        search &&
-        !item.band.toLowerCase().includes(search) &&
-        !item.bandName.toLowerCase().includes(search)
-      ) {
+      if (search && !item.band.toLowerCase().includes(search)) {
         return false;
       }
 
@@ -328,39 +325,20 @@ export function BandInfoStandalone() {
             <h1 className="text-lg font-semibold tracking-tight truncate">Band Information Tool</h1>
             <p className="text-xs text-slate-500 mt-0.5">Search and inspect NR or LTE band data.</p>
           </div>
+
+          <a
+            href="/calculator"
+            className="text-slate-600 hover:text-slate-900 flex items-center gap-1 text-sm font-medium transition flex-shrink-0"
+          >
+            SSB Calculator
+            <ArrowRight className="h-4 w-4" />
+          </a>
         </header>
 
 
 
           <div className="flex flex-col gap-2 w-full">
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-2 rounded border border-slate-200 bg-slate-50 px-2 py-1">
-                <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 whitespace-nowrap">Freq (MHz)</span>
-                <input
-                  type="number"
-                  value={filters.freqFrom}
-                  onChange={(event) => updateFilter('freqFrom', event.target.value)}
-                  placeholder="From"
-                  className="w-20 rounded border border-slate-200 bg-white px-1 py-1 text-xs outline-none focus:border-blue-500"
-                />
-                <span className="text-slate-400">—</span>
-                <input
-                  type="number"
-                  value={filters.freqTo}
-                  onChange={(event) => updateFilter('freqTo', event.target.value)}
-                  placeholder="To"
-                  className="w-20 rounded border border-slate-200 bg-white px-1 py-1 text-xs outline-none focus:border-blue-500"
-                />
-              </div>
-              <a
-                href="/"
-                className="rounded border border-[#F27024] bg-[#F27024] px-3 py-1.5 text-sm font-medium text-white transition hover:bg-[#DD5F18] flex-shrink-0"
-              >
-                SSB Calculator
-              </a>
-            </div>
-
-            <div className="flex flex-nowrap items-center gap-2 rounded-lg border border-orange-200 bg-white p-2 overflow-x-auto">
+            <div className="flex flex-wrap md:flex-nowrap items-center gap-2 rounded-lg border border-orange-200 bg-white p-2 md:overflow-x-auto">
               <div className="relative flex-shrink-0">
                 <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-orange-300" />
                 <input
@@ -368,11 +346,11 @@ export function BandInfoStandalone() {
                   value={filters.search}
                   onChange={(event) => updateFilter('search', event.target.value)}
                   placeholder="Search"
-                  className="rounded border border-orange-200 bg-white py-1.5 pl-8 pr-2 text-xs outline-none transition focus:border-[#F27024] focus:ring-2 focus:ring-orange-500/20 w-32"
+                  className="rounded border border-orange-200 bg-white py-1 pl-8 pr-2 text-xs outline-none transition focus:border-[#F27024] focus:ring-2 focus:ring-orange-500/20 w-32 h-8"
                 />
               </div>
 
-              <div className="inline-flex rounded-md border border-orange-200 bg-orange-50 p-0.5 flex-shrink-0">
+              <div className="inline-flex rounded-md border border-orange-200 bg-orange-50 p-0.5 flex-shrink-0 h-8 items-center">
                 {(['NR', 'LTE'] as Rat[]).map((rat) => (
                   <button
                     key={rat}
@@ -388,66 +366,183 @@ export function BandInfoStandalone() {
                 ))}
               </div>
 
-              <select
-                className="rounded border border-[#F27024] bg-white pl-2 pr-1 py-1 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 w-auto flex-shrink-0"
-                value={filters.mode}
-                onChange={(event) => updateFilter('mode', event.target.value)}
-              >
-                <option value="">Modes</option>
-                {filterOptions.mode.map((mode) => (
-                  <option key={mode} value={mode}>
-                    {mode}
-                  </option>
-                ))}
-              </select>
-
-              <select
-                className="rounded border border-[#F27024] bg-white pl-2 pr-1 py-1 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 w-auto flex-shrink-0"
-                value={filters.geoArea}
-                onChange={(event) => updateFilter('geoArea', event.target.value)}
-              >
-                <option value="">Regions</option>
-                {filterOptions.geoArea.map((region) => (
-                  <option key={region} value={region}>
-                    {region}
-                  </option>
-                ))}
-              </select>
-
-              <select
-                className="rounded border border-[#F27024] bg-white pl-2 pr-1 py-1 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 w-auto flex-shrink-0"
-                value={filters.release}
-                onChange={(event) => updateFilter('release', event.target.value)}
-              >
-                <option value="">Releases</option>
-                {filterOptions.release.map((release) => (
-                  <option key={release} value={release}>
-                    {release}
-                  </option>
-                ))}
-              </select>
-
-              <select
-                className="rounded border border-[#F27024] bg-white pl-2 pr-1 py-1 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 w-auto flex-shrink-0"
-                value={filters.supportedBandwidth}
-                onChange={(event) => updateFilter('supportedBandwidth', event.target.value)}
-              >
-                <option value="">Bandwidths</option>
-                {filterOptions.supportedBandwidth.map((bandwidth) => (
-                  <option key={bandwidth} value={String(bandwidth)}>
-                    {bandwidth} MHz
-                  </option>
-                ))}
-              </select>
-
               <button
                 type="button"
-                onClick={() => setFilters(INITIAL_FILTERS)}
-                className="ml-auto rounded border border-[#F27024] bg-[#F27024] px-3 py-1 text-xs font-medium text-white transition hover:bg-[#DD5F18] flex-shrink-0"
+                onClick={() => setShowMobileFilters(!showMobileFilters)}
+                className="md:hidden rounded border border-[#F27024] bg-[#F27024] px-3 py-1 text-xs font-medium text-white transition hover:bg-[#DD5F18] flex-shrink-0 h-8 flex items-center gap-1"
               >
-                Clear
+                Filters
+                <ChevronDown className={`h-4 w-4 transition-transform ${showMobileFilters ? 'rotate-180' : ''}`} />
               </button>
+
+              <div className="hidden md:flex md:flex-nowrap items-center gap-2 w-full justify-start\">
+                <select
+                  className="rounded border border-[#F27024] bg-white px-1 py-1.5 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 w-auto flex-shrink-0 h-8\"
+                  value={filters.mode}
+                  onChange={(event) => updateFilter('mode', event.target.value)}
+                >
+                  <option value="">Modes</option>
+                  {filterOptions.mode.map((mode) => (
+                    <option key={mode} value={mode}>
+                      {mode}
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  className="rounded border border-[#F27024] bg-white px-1 py-1.5 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 w-auto flex-shrink-0 h-8"
+                  value={filters.supportedBandwidth}
+                  onChange={(event) => updateFilter('supportedBandwidth', event.target.value)}
+                >
+                  <option value="">Bandwidths</option>
+                  {filterOptions.supportedBandwidth.map((bandwidth) => (
+                    <option key={bandwidth} value={String(bandwidth)}>
+                      {bandwidth} MHz
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  className="rounded border border-[#F27024] bg-white px-1 py-1.5 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 w-auto flex-shrink-0 h-8"
+                  value={filters.geoArea}
+                  onChange={(event) => updateFilter('geoArea', event.target.value)}
+                >
+                  <option value="">Regions</option>
+                  {filterOptions.geoArea.map((region) => (
+                    <option key={region} value={region}>
+                      {region}
+                    </option>
+                  ))}
+                </select>
+
+                <select
+                  className="rounded border border-[#F27024] bg-white px-1 py-1.5 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 w-auto flex-shrink-0 h-8"
+                  value={filters.release}
+                  onChange={(event) => updateFilter('release', event.target.value)}
+                >
+                  <option value="">Releases</option>
+                  {filterOptions.release.map((release) => (
+                    <option key={release} value={release}>
+                      {release}
+                    </option>
+                  ))}
+                </select>
+
+                <div className="flex items-center gap-2 rounded border border-slate-300 bg-white px-2 py-1 flex-shrink-0 h-8">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 whitespace-nowrap">Freq (MHz)</span>
+                  <input
+                    type="number"
+                    value={filters.freqFrom}
+                    onChange={(event) => updateFilter('freqFrom', event.target.value)}
+                    placeholder="From"
+                    className="w-16 rounded border border-slate-300 bg-white px-1 py-1 text-xs outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                  />
+                  <span className="text-slate-400">—</span>
+                  <input
+                    type="number"
+                    value={filters.freqTo}
+                    onChange={(event) => updateFilter('freqTo', event.target.value)}
+                    placeholder="To"
+                    className="w-16 rounded border border-slate-300 bg-white px-1 py-1 text-xs outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                  />
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setFilters(INITIAL_FILTERS)}
+                  className="ml-auto rounded border border-[#F27024] bg-[#F27024] px-3 py-1 text-xs font-medium text-white transition hover:bg-[#DD5F18] flex-shrink-0 h-8 flex items-center"
+                >
+                  Clear
+                </button>
+              </div>
             </div>
+
+            {showMobileFilters && (
+              <div className="md:hidden flex flex-col gap-2 rounded-lg border border-orange-200 bg-white p-2">
+                <div className="flex items-center gap-2">
+                  <select
+                    className="rounded border border-[#F27024] bg-white px-1 py-1.5 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 flex-1 h-8"
+                    value={filters.mode}
+                    onChange={(event) => updateFilter('mode', event.target.value)}
+                  >
+                    <option value="">Modes</option>
+                    {filterOptions.mode.map((mode) => (
+                      <option key={mode} value={mode}>
+                        {mode}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    className="rounded border border-[#F27024] bg-white px-1 py-1.5 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 flex-1 h-8"
+                    value={filters.supportedBandwidth}
+                    onChange={(event) => updateFilter('supportedBandwidth', event.target.value)}
+                  >
+                    <option value="">Bandwidths</option>
+                    {filterOptions.supportedBandwidth.map((bandwidth) => (
+                      <option key={bandwidth} value={String(bandwidth)}>
+                        {bandwidth} MHz
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    className="rounded border border-[#F27024] bg-white px-1 py-1.5 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 flex-1 h-8"
+                    value={filters.geoArea}
+                    onChange={(event) => updateFilter('geoArea', event.target.value)}
+                  >
+                    <option value="">Regions</option>
+                    {filterOptions.geoArea.map((region) => (
+                      <option key={region} value={region}>
+                        {region}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    className="rounded border border-[#F27024] bg-white px-1 py-1.5 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 flex-1 h-8"
+                    value={filters.release}
+                    onChange={(event) => updateFilter('release', event.target.value)}
+                  >
+                    <option value="">Releases</option>
+                    {filterOptions.release.map((release) => (
+                      <option key={release} value={release}>
+                        {release}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 rounded border border-slate-300 bg-white px-2 py-1 flex-1">
+                    <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 whitespace-nowrap">Freq (MHz)</span>
+                    <input
+                      type="number"
+                      value={filters.freqFrom}
+                      onChange={(event) => updateFilter('freqFrom', event.target.value)}
+                      placeholder="From"
+                      className="w-16 rounded border border-slate-300 bg-white px-1 py-1 text-xs outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                    />
+                    <span className="text-slate-400">—</span>
+                    <input
+                      type="number"
+                      value={filters.freqTo}
+                      onChange={(event) => updateFilter('freqTo', event.target.value)}
+                      placeholder="To"
+                      className="w-16 rounded border border-slate-300 bg-white px-1 py-1 text-xs outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                    />
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setFilters(INITIAL_FILTERS)}
+                    className="rounded border border-[#F27024] bg-[#F27024] px-3 py-1 text-xs font-medium text-white transition hover:bg-[#DD5F18] flex-shrink-0 h-8"
+                  >
+                    Clear
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
 
         <div className="relative flex-1 min-h-0 rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden">

@@ -11,7 +11,7 @@ import {
     validateGlobalGSCN,
     type BandInfo,
 } from './calculations';
-import { Calculator, Check, X } from 'lucide-react';
+import { Calculator, Check, X, ArrowRight } from 'lucide-react';
 import logoDark from '../../logo_dark.svg';
 
 type InputType = 'arfcn' | 'frequency';
@@ -308,9 +308,18 @@ export function NRGSCNCalculator() {
             <div className="flex flex-col md:flex-row overflow-y-auto md:overflow-hidden flex-1 w-full min-h-0 pb-16 md:pb-0">
                 <div className="calc-sidebar md:shrink-0 bg-white md:border-r border-gray-200 p-6 md:p-8 flex flex-col gap-8 w-full md:w-96 shadow-sm md:h-screen md:overflow-y-auto h-auto">
                     {/* Header */}
-                    <div className="flex flex-col items-center gap-4">
-                        <img src={logoDark} alt="Simnovus" className="h-10 w-auto object-contain" />
-                        <h1 className="text-xl font-bold text-gray-900 tracking-tight">SSB Calculator</h1>
+                    <div className="flex flex-col gap-4 pb-3 border-b border-gray-200">
+                        <div className="flex items-center justify-between">
+                            <img src={logoDark} alt="Simnovus" className="h-7 w-auto object-contain" />
+                            <a
+                                href="/"
+                                className="text-slate-600 hover:text-slate-900 flex items-center gap-1 text-sm font-medium transition"
+                            >
+                                Band Info
+                                <ArrowRight className="h-4 w-4" />
+                            </a>
+                        </div>
+                        <h1 className="text-xl font-bold text-gray-900 tracking-tight w-full text-center">SSB Calculator</h1>
                     </div>
 
                     {/* Input Section */}
@@ -431,15 +440,6 @@ export function NRGSCNCalculator() {
                                 </div>
                             )}
                         </div>
-                        <div className="space-y-1.5">
-                        <a
-                            href="/band-info"
-                            style={{ ...btnInlineStyles.base, ...btnInlineStyles.secondary }}
-                            className="text-center"
-                        >
-                            Band Information
-                        </a>
-                    </div>
                     </div>
                 </div>
 

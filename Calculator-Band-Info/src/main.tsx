@@ -8,12 +8,12 @@ import { NRGSCNCalculator } from './NR-GSCN/NR-GSCN-Calculator';
 
 const router = createBrowserRouter([
   {
-    path: "/band-info",
-    element: <BandInfoStandalone />,
+    path: "/calculator",
+    element: <NRGSCNCalculator />,
   },
   {
     path: "/",
-    element: <NRGSCNCalculator />,
+    element: <BandInfoStandalone  />,
   }
 ]);
 
