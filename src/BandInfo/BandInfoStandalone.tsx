@@ -319,7 +319,7 @@ export function BandInfoStandalone() {
   return (
     <div className="h-full w-full bg-slate-50 text-slate-900 flex flex-col overflow-hidden p-4 md:p-8">
       <div className="flex flex-col gap-6 h-full min-h-0">
-        <header className="flex flex-col gap-2 xl:flex-row xl:items-start xl:justify-between pb-3 border-b border-slate-200">
+        <header className="flex flex-col gap-2 xl:flex-row xl:items-center xl:justify-between pb-3 border-b border-slate-200">
           <div className="flex items-center gap-3">
             <img src={logoDark} alt="Simnovus" className="h-7 w-auto object-contain" />
           </div>
@@ -327,35 +327,6 @@ export function BandInfoStandalone() {
           <div className="mt-0 xl:mt-0 xl:ml-3 xl:mr-auto min-w-0">
             <h1 className="text-lg font-semibold tracking-tight truncate">Band Information Tool</h1>
             <p className="text-xs text-slate-500 mt-0.5">Search and inspect NR or LTE band data.</p>
-          </div>
-
-          <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-end flex-1">
-            <div className="inline-flex rounded-md border border-orange-200 bg-orange-50 p-0.5 self-start">
-              {(['NR', 'LTE'] as Rat[]).map((rat) => (
-                <button
-                  key={rat}
-                  type="button"
-                  onClick={() => {
-                    setCurrentRat(rat);
-                    setSelectedBand(null);
-                  }}
-                  className={`px-2 py-1 text-xs font-medium rounded-md transition-colors ${currentRat === rat ? 'bg-[#F27024] text-white shadow-sm' : 'text-orange-700 hover:bg-orange-100 hover:text-[#F27024]'}`}
-                >
-                  {rat}
-                </button>
-              ))}
-            </div>
-
-            <div className="relative w-full md:max-w-md">
-              <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-orange-300" />
-              <input
-                type="text"
-                value={filters.search}
-                onChange={(event) => updateFilter('search', event.target.value)}
-                placeholder="Search by band (e.g. n1, 28)..."
-                className="w-full rounded border border-orange-200 bg-white py-1.5 pl-8 pr-2 text-xs outline-none transition focus:border-[#F27024] focus:ring-2 focus:ring-orange-500/20"
-              />
-            </div>
           </div>
         </header>
 
@@ -381,11 +352,44 @@ export function BandInfoStandalone() {
                   className="w-20 rounded border border-slate-200 bg-white px-1 py-1 text-xs outline-none focus:border-blue-500"
                 />
               </div>
+              <a
+                href="/calculator"
+                className="rounded border border-[#F27024] bg-[#F27024] px-3 py-1.5 text-sm font-medium text-white transition hover:bg-[#DD5F18] flex-shrink-0"
+              >
+                SSB Calculator
+              </a>
             </div>
 
-            <div className="flex flex-nowrap items-center gap-1 rounded-lg border border-orange-200 bg-white p-2 overflow-x-auto">
+            <div className="flex flex-nowrap items-center gap-2 rounded-lg border border-orange-200 bg-white p-2 overflow-x-auto">
+              <div className="relative flex-shrink-0">
+                <Search className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-orange-300" />
+                <input
+                  type="text"
+                  value={filters.search}
+                  onChange={(event) => updateFilter('search', event.target.value)}
+                  placeholder="Search"
+                  className="rounded border border-orange-200 bg-white py-1.5 pl-8 pr-2 text-xs outline-none transition focus:border-[#F27024] focus:ring-2 focus:ring-orange-500/20 w-32"
+                />
+              </div>
+
+              <div className="inline-flex rounded-md border border-orange-200 bg-orange-50 p-0.5 flex-shrink-0">
+                {(['NR', 'LTE'] as Rat[]).map((rat) => (
+                  <button
+                    key={rat}
+                    type="button"
+                    onClick={() => {
+                      setCurrentRat(rat);
+                      setSelectedBand(null);
+                    }}
+                    className={`px-2 py-1 text-xs font-medium rounded-md transition-colors ${currentRat === rat ? 'bg-[#F27024] text-white shadow-sm' : 'text-orange-700 hover:bg-orange-100 hover:text-[#F27024]'}`}
+                  >
+                    {rat}
+                  </button>
+                ))}
+              </div>
+
               <select
-                className="rounded border border-[#F27024] bg-white pl-2 pr-1 py-1 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 w-auto"
+                className="rounded border border-[#F27024] bg-white pl-2 pr-1 py-1 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 w-auto flex-shrink-0"
                 value={filters.mode}
                 onChange={(event) => updateFilter('mode', event.target.value)}
               >
@@ -398,7 +402,7 @@ export function BandInfoStandalone() {
               </select>
 
               <select
-                className="rounded border border-[#F27024] bg-white pl-2 pr-1 py-1 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 w-auto"
+                className="rounded border border-[#F27024] bg-white pl-2 pr-1 py-1 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 w-auto flex-shrink-0"
                 value={filters.geoArea}
                 onChange={(event) => updateFilter('geoArea', event.target.value)}
               >
@@ -411,7 +415,7 @@ export function BandInfoStandalone() {
               </select>
 
               <select
-                className="rounded border border-[#F27024] bg-white pl-2 pr-1 py-1 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 w-auto"
+                className="rounded border border-[#F27024] bg-white pl-2 pr-1 py-1 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 w-auto flex-shrink-0"
                 value={filters.release}
                 onChange={(event) => updateFilter('release', event.target.value)}
               >
@@ -424,7 +428,7 @@ export function BandInfoStandalone() {
               </select>
 
               <select
-                className="rounded border border-[#F27024] bg-white pl-2 pr-1 py-1 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 w-auto"
+                className="rounded border border-[#F27024] bg-white pl-2 pr-1 py-1 text-xs text-[#F27024] outline-none focus:ring-2 focus:ring-orange-500/30 w-auto flex-shrink-0"
                 value={filters.supportedBandwidth}
                 onChange={(event) => updateFilter('supportedBandwidth', event.target.value)}
               >
@@ -439,7 +443,7 @@ export function BandInfoStandalone() {
               <button
                 type="button"
                 onClick={() => setFilters(INITIAL_FILTERS)}
-                className="ml-auto rounded border border-[#F27024] bg-[#F27024] px-3 py-1 text-xs font-medium text-white transition hover:bg-[#DD5F18]"
+                className="ml-auto rounded border border-[#F27024] bg-[#F27024] px-3 py-1 text-xs font-medium text-white transition hover:bg-[#DD5F18] flex-shrink-0"
               >
                 Clear
               </button>
