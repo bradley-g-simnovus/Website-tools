@@ -226,11 +226,7 @@ export function BandInfoStandalone() {
     const search = filters.search.trim().toLowerCase();
 
     const filtered = rawData.filter((item) => {
-      if (
-        search &&
-        !item.band.toLowerCase().includes(search) &&
-        !item.bandName.toLowerCase().includes(search)
-      ) {
+      if (search && !item.band.toLowerCase().includes(search)) {
         return false;
       }
 
