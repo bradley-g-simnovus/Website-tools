@@ -128,8 +128,8 @@ function BandInfoTable({ bands, title = 'Band Information' }: BandInfoTableProps
                     <thead className="bg-gray-50 border-b border-gray-100">
                         <tr>
                             <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Band</th>
-                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">DL Frequency Range</th>
-                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">UL Frequency Range</th>
+                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">DL Frequency Range (MHz)</th>
+                            <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">UL Frequency Range (MHz)</th>
                             <th className="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Mode</th>
                         </tr>
                     </thead>
@@ -137,8 +137,8 @@ function BandInfoTable({ bands, title = 'Band Information' }: BandInfoTableProps
                         {bands.map((band) => (
                             <tr key={band.band} className="hover:bg-gray-50 transition-colors">
                                 <td className="px-6 py-4 text-sm font-bold text-gray-900">{band.band}</td>
-                                <td className="px-6 py-4 text-sm text-gray-700">{band.low_freq}-{band.high_freq} MHz</td>
-                                <td className="px-6 py-4 text-sm text-gray-700">{band.low_uplink_freq}-{band.high_uplink_freq} MHz</td>
+                                <td className="px-6 py-4 text-sm text-gray-700">{band.low_freq}-{band.high_freq}</td>
+                                <td className="px-6 py-4 text-sm text-gray-700">{band.low_uplink_freq}-{band.high_uplink_freq}</td>
                                 <td className="px-6 py-4 text-sm font-semibold text-gray-900">{band.mode}</td>
                             </tr>
                         ))}
