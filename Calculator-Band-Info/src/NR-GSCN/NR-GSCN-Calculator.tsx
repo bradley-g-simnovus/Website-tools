@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { 
-    frequencyToGSCN, 
-    frequencyToARFCN, 
+import {
+    frequencyToGSCN,
+    frequencyToARFCN,
     arfcnToFrequency,
     findBandByFrequency,
     findBandByARFCN,
@@ -319,7 +319,8 @@ export function NRGSCNCalculator() {
                                 <ArrowRight className="h-4 w-4" />
                             </a>
                         </div>
-                        <h1 className="text-xl font-bold text-gray-900 tracking-tight w-full text-center">SSB Calculator</h1>
+                        <h1 className="text-lg font-bold text-gray-900 tracking-tight w-full text-center">5G NR Frequency & ARFCN Toolkit</h1>
+                        <h2 className="text-sm font-bold text-gray-600 tracking-tight w-full text-center uppercase">SSB Calculator</h2>
                     </div>
 
                     {/* Input Section */}
